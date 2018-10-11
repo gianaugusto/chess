@@ -2,24 +2,22 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Chess.Client.Infra.Extensions;
     using Chess.Interfaces;
     using Chess.Lib.Exceptions;
     using Chess.Lib.Extensions;
     using Chess.Models;
+    using Orleans;
     using static Chess.Client.Infra.UI.Reader;
     using static Chess.Client.Infra.UI.Writer;
     using static System.Threading.Thread;
 
-    internal class GameClient : IGameClient
+    internal class PlayerCallback : IPlayerCallback
     {
-        public void GameChanged(Chessboard chessboard, IGameServer gameServer)
-        {
-            chessboard.Draw();
-            NextMove(gameServer);
-        }
+        public void GameChanged(Chessboard chessboard, IBoard board) => chessboard.Draw();
 
-        private static void NextMove(IGameServer gameServer)
+        public void YourMove(IBoard board)
         {
             ClearOption();
 
@@ -31,7 +29,7 @@
 
             try
             {
-                gameServer.Move(piecePosition, newPosition);
+                board.MoveAsync(piecePosition, newPosition);
             }
             catch (ChessException exception)
             {
