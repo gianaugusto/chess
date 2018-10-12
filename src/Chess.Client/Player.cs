@@ -15,9 +15,9 @@
 
     internal class PlayerCallback : IPlayerCallback
     {
-        public void GameChanged(Chessboard chessboard, IBoard board) => chessboard.Draw();
+        public void GameChanged(Chessboard chessboard, IMatch board) => chessboard.Draw();
 
-        public void YourMove(IBoard board)
+        public void YourMove(IMatch board)
         {
             ClearOption();
 
